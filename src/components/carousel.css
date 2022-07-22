@@ -1,0 +1,34 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
+.carousel {
+  width: 38vw;
+  background-color: transparent;
+}
+.carousel__img {
+  border-radius: 16px;
+}
+
+.image-gallery-bullets .image-gallery-bullet {
+  border-color: #7126B5;
+}
+
+.image-gallery-bullets .image-gallery-bullet.active{
+  background: #7126B5;
+  border-color: #7126B5;
+}
+
+.image-gallery-bullets .image-gallery-bullet:hover {
+  background: #fff;
+}
+
+
+@media (max-width: 600px) {
+  .carousel {
+    width: 100vw;
+  }
+  .carousel__img {
+    width: 100%;
+    border-radius: 0;
+  }
+
+}

@@ -1,0 +1,102 @@
+h6 {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+.header__info {
+  align-items: center;
+}
+
+.header__title {
+  width: 100%;
+  text-align: center;
+}
+
+.penawaran {
+  margin: 2% 20%;
+  gap: 20px;
+}
+
+.penawaran .seller__info {
+  margin-bottom: 20px;
+}
+
+.notif-item {
+  display: flex;
+  padding : 10px;
+  gap: 15px;
+}
+
+.notif-text {
+  width: 100%;
+}
+
+.back {
+  display: inline;
+  background-color: transparent;
+  border: none;
+  margin: 32px 16px 0;
+}
+
+.modal {
+  width: 360px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal-body {
+  padding: 12px 30px;
+}
+
+.modal-body h5, p {
+  font-size: 14px;
+}
+
+.product__img {
+  width: 48px;
+  height: fit-content;
+  border-radius: 12px;
+}
+
+.penawar__btn {
+  display: flex;
+  gap: 16px;
+  float: right;
+}
+
+.penawar__btn .button {
+  width: 158px;
+  height: fit-content;
+}
+
+.modal__info {
+  background-color: #EEEEEE;
+  border-radius: 16px;
+  padding: 10px 10px 0 10px;
+}
+
+.modal__info .title {
+  text-align: center;
+}
+
+.modal__info .buyer {
+  padding: 10px 15px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-items: center;
+}
+
+.product__price {
+  text-decoration: line-through;
+}
+
+.btn__wa {
+  display: flex;
+  justify-content: space-evenly;
+}
