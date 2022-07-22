@@ -5,7 +5,6 @@ import Navbar from '../components/navbar'
 import  ProductList from '../components/daftarJual/productList'
 
 import { dataSellers } from '../data/dataSellers'
-import { dataProducts } from '../data/dataProducts'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

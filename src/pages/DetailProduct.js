@@ -6,6 +6,7 @@ import Navbar from '../components/navbar'
 
 import {Link, useNavigate } from "react-router-dom";
 import { useState } from 'react'
+
 //Toast Notification
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -72,7 +73,7 @@ const Detail = () => {
               id="alertBtn"
               onClick={handleShow}  
             >
-              Saya tertarik dan ingin nego          
+              Saya tertarik dan ingin nego
             </button>
           </div>
       </div>
@@ -93,34 +94,34 @@ const Detail = () => {
       </main>
 
       <Modal show={show} onHide={handleClose} className="modal" >
-              <Modal.Header closeButton />
-              <Modal.Body>
-                <h5>Masukkan Harga Tawarmu</h5>
-                <p className="text-muted">Harga tawaranmu akan diketahui penual, jika penjual cocok kamu akan segera dihubungi penjual.</p>
+        <Modal.Header closeButton />
+        <Modal.Body>
+          <h5>Masukkan Harga Tawarmu</h5>
+          <p className="text-muted">Harga tawaranmu akan diketahui penjual, jika penjual cocok kamu akan segera dihubungi penjual.</p>
 
-                <div className="modal__info">
-                  <div className="buyer">
-                    <img className="product__img" src={Produk} alt="" />
-                    <div className="seller__text">
-                      <h3 className="seller__name">{dataProducts[0].name}</h3>
-                      <p className="seller__city">{dataProducts[0].price}</p>
-                    </div>
-                  </div>
-                </div>
-                  <form>
-                    <label htmlFor="tawar">Harga Tawar</label>
-                    <input type="number" name="tawar" placeholder="Rp 0,00" required/>
-                  </form>
-                </Modal.Body>
-              <Modal.Footer>
-                <button 
-                  className="button btn__purple btn__wa"
-                  onClick={handleChangeButton}
-                >
-                  Kirim
-                </button>
-              </Modal.Footer>
-            </Modal>
+          <div className="modal__info">
+            <div className="buyer">
+              <img className="product__img" src={Produk} alt="" />
+              <div className="seller__text">
+                <h3 className="seller__name">{dataProducts[0].name}</h3>
+                <p className="seller__city">{dataProducts[0].price}</p>
+              </div>
+            </div>
+          </div>
+          <form>
+            <label htmlFor="tawar">Harga Tawar</label>
+            <input type="number" name="tawar" placeholder="Rp 0,00" min="0" required/>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button 
+            className="button btn__purple btn__wa"
+            onClick={handleChangeButton}
+          >
+            Kirim
+          </button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }

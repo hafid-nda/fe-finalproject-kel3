@@ -1,3 +1,31 @@
-.button {
+.home .button {
   padding: 0;
+}
+
+.home__carousel {
+  height: 288px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.home__carousel img {
+  height: 100%;
+}
+
+.home__main {
+  margin: 0 9%;
+}
+
+.product-list {
+  display: flex;
+  gap: 20px;
+}
+
+.item-container {
+  width: 170px;
+}
+
+.item-container img {
+  width: 100%;
 }

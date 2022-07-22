@@ -1,7 +1,7 @@
 export const dataProducts = [
   {
     name: "Jam Tangan Casio",
-    category: "Aksesoris",
+    category: "Elektronik",
     price: "250.000",
     image: [
       {
@@ -21,11 +21,11 @@ export const dataProducts = [
   },
   {
     name: "Jam Tangan Cassjaio",
-    category: "Aksesoris",
+    category: "Baju",
     price: "250.000",
     image: [
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
       {
         url: '../assets/images/produk.png',
@@ -41,40 +41,40 @@ export const dataProducts = [
   },
   {
     name: "Jam Tangan Casioma",
-    category: "Aksesosris",
+    category: "Baju",
     price: "250.000",
     image: [
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
     ],
     desc: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Soluta dolore voluptas obcaecati eaque alias harum? Assumenda quia facere autem sed!'
   },
   {
     name: "Jam Tangan Casio",
-    category: "Aksesoris",
+    category: "Kesehatan",
     price: "250.000",
     image: [
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
       {
-        url: '../assets/images/produk.png',
+        url: require('../assets/images/produk.png'),
       },
     ],
     desc: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Soluta dolore voluptas obcaecati eaque alias harum? Assumenda quia facere autem sed!'

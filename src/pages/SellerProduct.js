@@ -49,31 +49,31 @@ const SellerProduct = () => {
             <p className="product__category">{dataProducts[0].category}</p>
             <p>Rp {dataProducts[0].price}</p>
           <div className="btn__container">
-            <Link
-              to={{
-                pathname: "/daftarjual",
-                state: { toasty }
-              }}
+            <button 
+              className="button btn__purple" 
+              type="button"
+              id="alertBtn"
+              // onClick={/}
+              // onClick={routeChange}
             >
-              <button 
-                className="button btn__purple" 
-                type="button"
-                id="alertBtn"
-                // onClick={/}
-                // onClick={routeChange}
+              <Link
+                to={{
+                  pathname: "/daftarjual",
+                  state: { toasty }
+                }}
               >
                 Terbitkan            
-              </button>
-            </Link>
-            <Link
-              to={{
-                pathname: "/product/edit",
-              }}
-            >
-              <button className="button btn__white" type="button">
+              </Link>
+            </button>
+            <button className="button btn__white" type="button">
+              <Link
+                to={{
+                  pathname: "/product/edit",
+                }}
+              >
                 Edit
-              </button>
-            </Link>
+              </Link>
+            </button>
           </div>
       </div>
 

@@ -1,7 +1,11 @@
+import '../assets/styles/home.css'
+
 import { ToastContainer, toast } from 'react-toastify';
 import Navbar from '../components/navbar'
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+
+import { dataProducts } from '../data/dataProducts'
 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,15 +13,22 @@ import {
   faSearch
 } from "@fortawesome/free-solid-svg-icons";
 
-export const product = ({ name, category }) => (
-  <div className="item-container">
+import banner from '../assets/images/banner.png'
+export const Product = ({ name, price, category, image }) => (
+  
+  <div className="item-container card">
+      <img 
+        src={image[0].url} 
+        alt="" 
+      />      
     <div>
-      <span className="item-label">Name:</span>
       {name}
     </div>
     <div>
-      <span className="item-label">Category:</span>
       {category}
+    </div>
+    <div>
+      {price}
     </div>
   </div>
 );
@@ -28,17 +39,37 @@ const Home = () => {
   //   const toasty = () => toast("asdaisfjaisjaiosjdaoisjdoaisd");
   // }
 
-  const [sportList, setSportList] = useState([]);
+  const [productList, setProductList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
 
+  useEffect(() => {
+    setProductList(dataProducts);
+  }, []);
+
+  function handleCategoryChange(event) {
+    setSelectedCategory(event.target.value);
+  }
+
+  function getFilteredList() {
+    if (!selectedCategory) {
+      return productList;
+    }
+    return productList.filter((item) => item.category === selectedCategory);
+  }
+
+  var filteredList = useMemo(getFilteredList, [selectedCategory, productList]);
+
   return (
-    <>
+    <div className="home">
       <Navbar />
       {/* <ToastContainer /> */}
 
-      <div>
-        <h3>Telusuri Kategori</h3>
-        <div>
+      <div className="home__carousel">
+        <img src={banner} alt="" />
+      </div>
+      <main className="home__main">
+        <h4>Telusuri Kategori</h4>
+        {/* <div>
           <button>
             <FontAwesomeIcon icon={faSearch}  size="lg"/>
             Semua
@@ -63,13 +94,32 @@ const Home = () => {
             <FontAwesomeIcon icon={faSearch}  size="lg"/>
             Kesehatan
           </button>
-        </div>
+        </div> */}
 
         <div>
-          
+          <select
+            name="category-list"
+            id="category-list"
+            onChange={handleCategoryChange}
+          >
+            <option value="">Semua</option>
+            <option value="Hobi">Hobi</option>
+            <option value="Kendaraan">Kendaraan</option>
+            <option value="Baju">Baju</option>
+            <option value="Elektronik">Elektronik</option>
+            <option value="Kesehatan">Kesehatan</option>
+
+          </select>
         </div>
-      </div>
-    </>
+        <div className="product-list">
+          {filteredList.map((element, index) => (
+            <Product {...element} key={index} />
+          ))}
+        </div>
+
+        {/* <button className="button btn__purple">Jual</button> */}
+      </main>
+    </div>
   )
 }
 
