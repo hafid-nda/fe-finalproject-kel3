@@ -1,8 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import './navbar.css'
-import Form from 'react-bootstrap/Form'
 
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Logo from '../assets/images/logo.png';
@@ -44,18 +42,6 @@ function NavbarMenu() {
           <FontAwesomeIcon icon={faListUl}  size="lg"/>
         </button>
       </Link>
-      {/* <button 
-        className="nav__btn bell" 
-        type="button" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Notifikasi"
-        onClick={handleClick}
-      >
-        <FontAwesomeIcon icon={faBell}  size="lg"/>
-      </button>
-
-      {clickInput && <Notif />} */}
 
       <Notif/>
 

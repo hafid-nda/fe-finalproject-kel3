@@ -105,7 +105,7 @@ export const InfoPenawar = () => {
                 Terima
               </button>
             </div>
-            {/*  */}
+
             <div className="penawar__btn" style={visibility2}>
               <button 
                 className="button btn__white"
@@ -120,7 +120,7 @@ export const InfoPenawar = () => {
                 <FontAwesomeIcon icon={faWhatsapp}  size="lg"/>
               </button>
             </div>
-            {/*  */}
+
             <Modal show={show} onHide={handleClose} className="modal" >
               <Modal.Header closeButton />
               <Modal.Body>

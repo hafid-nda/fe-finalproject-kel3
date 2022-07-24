@@ -11,8 +11,6 @@ import SellerProduct from './pages/SellerProduct';
 import ProductAdd from './pages/TambahProduct';
 
 import Profil from './pages/Profil';
-import Notif from './components/notif';
-import { InfoPenawar } from './components/InfoPenawar';
 import  DaftarJual from './pages/DaftarJual';
 import  Diminati from './pages/Diminati';
 import  Terjual from './pages/Terjual';
@@ -46,10 +44,7 @@ function App() {
 
           <Route path="/daftarjual" element={<DaftarJual />} />
           <Route path="/diminati" element={<Diminati />} />
-          <Route path="/terjual" element={<Terjual />} />
-          {/* <Route path="/info" element={<InfoPenawar />} /> */}
-          
-          {/* <Route path="/notifikasi" element={<Notif />} /> */}
+          <Route path="/terjual" element={<Terjual />} />          
           
         </Routes>
       </BrowserRouter>
