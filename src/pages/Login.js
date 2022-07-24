@@ -1,9 +1,9 @@
 import '../assets/styles/login.css'
 import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
 
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,22 +13,52 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
+  const navigate = useNavigate();  
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");
-  const [passwordInput, setPasswordInput] = useState("");
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, [])
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
   const handlePasswordChange = (e) => {
-      setPasswordInput(e.target.value);
-  }
+      setPassword(e.target.value);
+  };
   const togglePassword = () => {
     if(passwordType==="password") {
      setPasswordType("text")
      return;
     }
     setPasswordType("password")
-  }
+  };
+
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8000/api/login', {
+      email:email,
+      password:password
+    })
+    .then((res) => {
+      const result = res.data
+      console.log(result);
+      if(result) {
+        localStorage.setItem("token", result.accessToken);
+        navigate("/");
+      }
+    })
+  };
 
   return (
-    <>
-      <div className="container__left" >
+    <div>
+      <div className="container__left">
         <div className="background">
           <h1 className="brand">Second <br /> Hand.</h1>
         </div>
@@ -39,14 +69,34 @@ export default function Login() {
         </button>
         <div className="masuk">
           <h2>Masuk</h2>
-          <form action="" className="form">
+          <form action="" className="form" onSubmit={handleLogin}>
             <Form.Group>
               <label className="form__label" htmlFor="email">Email</label>
-              <input className="form__input" type="email" name="email" id="email" placeholder="Contoh: johndee@gmail.com" required/>
+              <input 
+                className="form__input" 
+                onChange={handleEmailChange}
+                ref={emailRef}
+                value={email}
+                type="email" 
+                name="email"
+                id="email"
+                placeholder="Contoh: johndee@gmail.com"
+                required
+              />
             </Form.Group>
             <label className="form__label" htmlFor="password">Password</label>
             <div className="pass__container">
-              <input className="form__input" onChange={handlePasswordChange} type={passwordType} name="password" id="password" placeholder="Masukkan password" required/>
+              <input 
+                className="form__input"
+                onChange={handlePasswordChange}
+                ref={passwordRef}
+                value={password}
+                type={passwordType}
+                name="password" 
+                id="password" 
+                placeholder="Masukkan password" 
+                required
+              />
               <button className="pass__eye" type="button" onClick={togglePassword}>
                 { passwordType==="password"?
                   <FontAwesomeIcon icon={faEye} size="xl" /> :
@@ -55,7 +105,10 @@ export default function Login() {
               </button>
             </div>
             
-            <button className="btn__dark" type="submit">
+            <button 
+              className="btn__dark" 
+              type="submit"
+            >
               Masuk
             </button>
           </form>
@@ -68,6 +121,6 @@ export default function Login() {
           </p>
         </div>
       </div>
-    </>
+    </div>
   )
 }

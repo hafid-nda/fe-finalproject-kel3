@@ -1,5 +1,5 @@
 import '../assets/styles/daftarJual.css'
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Navbar from '../components/navbar'
 import  ProductList from '../components/daftarJual/productList'

@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/navbar'
 import  ProductList from '../components/daftarJual/productList'
 
-import { dataProducts } from '../data/dataProducts'
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDollarSign,

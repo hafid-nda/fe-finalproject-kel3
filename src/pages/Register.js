@@ -1,7 +1,8 @@
 import '../assets/styles/login.css'
 
-import { Link } from 'react-router-dom'
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react';
+import axios from 'axios'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,10 +12,33 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Register = () => {
+  const navigate = useNavigate();  
+  const nameRef = useRef("");
+  const emailRef = useRef("");
+  const roleRef = useRef("");
+  const passwordRef = useRef("");
+
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [role, setRole] = useState("")
+  const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");
-  const [passwordInput, setPasswordInput] = useState("");
+
+  useEffect(() => {
+    nameRef.current.focus();
+  }, [])
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
   const handlePasswordChange =(e)=>{
-      setPasswordInput(e.target.value);
+      setPassword(e.target.value);
   }
   const togglePassword =()=>{
     if(passwordType==="password") {
@@ -22,6 +46,24 @@ const Register = () => {
      return;
     }
     setPasswordType("password")
+  }
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8000/api/register', {
+      name:name,
+      email:email,
+      role:role,
+      password:password
+    })
+    .then((res) => {
+      const result = res.data
+      console.log(result);
+      if(result) {
+        localStorage.setItem("token", result.accessToken);
+        navigate("/login");
+      }
+    })
   }
 
   return (
@@ -37,22 +79,57 @@ const Register = () => {
         </button>
         <div className="masuk">
           <h2>Daftar</h2>
-          <form action="" className="form">
+          <form onSubmit={handleRegister} className="form">
             <label className="form__label" htmlFor="name">Nama</label>
-            <input className="form__input" type="text" name="name" id="name" placeholder="Nama Lengkap" required/>
+            <input 
+              className="form__input" 
+              ref={nameRef}
+              value={name}
+              onChange={handleNameChange}
+              type="text" 
+              name="name" 
+              id="name" 
+              placeholder="Nama Lengkap" 
+              required
+            />
 
             <label className="form__label" htmlFor="email">Email</label>
-            <input className="form__input" type="email" name="email" id="email" placeholder="Contoh: johndee@gmail.com" required/>
+            <input 
+              className="form__input" 
+              ref={emailRef}
+              value={email}
+              onChange={handleEmailChange}
+              type="email" 
+              name="email" 
+              id="email" 
+              placeholder="Contoh: johndee@gmail.com" 
+              required
+            />
             
             <label className="form__label" htmlFor="role">Role</label>
-            <select className="form__input" required>
+            <select 
+              className="form__input" 
+              ref={roleRef}
+              onChange={handleRoleChange}
+              required
+            >
               <option value="buyer">Buyer</option>
               <option value="seller">Seller</option>
             </select>
             
             <label className="form__label" htmlFor="password">Password</label>
             <div className="pass__container">
-              <input className="form__input" onChange={handlePasswordChange} type={passwordType} name="password" id="password" placeholder="Masukkan password" required/>
+              <input 
+                className="form__input" 
+                onChange={handlePasswordChange} 
+                ref={passwordRef}
+                value={password}
+                type={passwordType} 
+                name="password" 
+                id="password" 
+                placeholder="Masukkan password" 
+                required
+              />
               <button className="pass__eye" type="button" onClick={togglePassword}>
                 { passwordType==="password"?
                   <FontAwesomeIcon icon={faEye} size="xl" /> :

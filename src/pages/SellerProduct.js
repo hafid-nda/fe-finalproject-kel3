@@ -1,11 +1,6 @@
 import '../assets/styles/product.css'
-// import 'bootstrap/dist/css/bootstrap.css';
 import Slider from '../components/carousel'
 import Navbar from '../components/navbar'
-
-//Toast Notification
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 //Import Icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,18 +11,9 @@ import {
 import { dataProducts } from '../data/dataProducts'
 import { dataSellers } from '../data/dataSellers'
 
-import {Link, useNavigate } from "react-router-dom";
+import {Link } from "react-router-dom";
 
 const SellerProduct = () => {
-  const toasty = () => toast("asdaisfjaisjaiosjdaoisjdoaisd");
-
-  let navigate = useNavigate(); 
-  const routeChange = () =>{ 
-    let path = `/`; 
-    
-    navigate(path);
-  }
-
   return (
     <>
       <Navbar />
@@ -41,8 +27,6 @@ const SellerProduct = () => {
           <Slider />
         </div>
 
-        {/* <ToastContainer /> */}
-
         <div className="info">
           <div className="product__info">
             <p className="product__name">{dataProducts[0].name}</p>
@@ -53,13 +37,10 @@ const SellerProduct = () => {
               className="button btn__purple" 
               type="button"
               id="alertBtn"
-              // onClick={/}
-              // onClick={routeChange}
             >
               <Link
                 to={{
                   pathname: "/daftarjual",
-                  state: { toasty }
                 }}
               >
                 Terbitkan            

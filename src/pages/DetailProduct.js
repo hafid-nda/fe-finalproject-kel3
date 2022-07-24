@@ -1,5 +1,4 @@
 import '../assets/styles/product.css'
-// import 'bootstrap/dist/css/bootstrap.css';
 import Modal from 'react-bootstrap/Modal'
 import Slider from '../components/carousel'
 import Navbar from '../components/navbar'
@@ -24,7 +23,6 @@ import { dataSellers } from '../data/dataSellers'
 
 
 const Detail = () => {
-  const toasty = () => toast("asdaisfjaisjaiosjdaoisjdoaisd");
 
   let navigate = useNavigate(); 
   const routeChange = () =>{ 
@@ -58,8 +56,6 @@ const Detail = () => {
         <div className="slider">
           <Slider />
         </div>
-
-        {/* <ToastContainer /> */}
 
         <div className="info">
           <div className="product__info">
