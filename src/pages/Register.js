@@ -1,9 +1,9 @@
-import '../assets/styles/login.css'
-
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios'
+import Alert from 'react-bootstrap/Alert'
 
+import '../assets/styles/login.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -23,6 +23,11 @@ const Register = () => {
   const [role, setRole] = useState("")
   const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");
+
+  const [errorResponse, setErrorResponse] = useState({
+    isError: false,
+    message: "",
+  });
 
   useEffect(() => {
     nameRef.current.focus();
@@ -48,22 +53,29 @@ const Register = () => {
     setPasswordType("password")
   }
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/register', {
-      name:name,
-      email:email,
-      role:role,
-      password:password
-    })
-    .then((res) => {
-      const result = res.data
-      console.log(result);
-      if(result) {
-        localStorage.setItem("token", result.accessToken);
-        navigate("/login");
-      }
-    })
+    try {
+      const userToRegisterPayload = {
+          name: nameRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+          role: roleRef.current.value
+      };
+      const registerRequest = await axios.post(
+          "http://localhost:2000/api/v1/register",
+          userToRegisterPayload
+      );
+      const registerResponse = registerRequest.data;
+      if (registerResponse.status) navigate("/login");
+  } catch (err) {
+      console.log(err);
+      const response = err.response.data;
+      setErrorResponse({
+        isError: true,
+        message: response.message,
+      });
+    }
   }
 
   return (
@@ -106,7 +118,7 @@ const Register = () => {
               required
             />
             
-            <label className="form__label" htmlFor="role">Role</label>
+            {/* <label className="form__label" htmlFor="role">Role</label>
             <select 
               className="form__input" 
               ref={roleRef}
@@ -115,7 +127,7 @@ const Register = () => {
             >
               <option value="buyer">Buyer</option>
               <option value="seller">Seller</option>
-            </select>
+            </select> */}
             
             <label className="form__label" htmlFor="password">Password</label>
             <div className="pass__container">
@@ -138,6 +150,9 @@ const Register = () => {
               </button>
             </div>
             
+            {errorResponse.isError && (
+              <Alert variant="danger">{errorResponse.message}</Alert>
+            )}
             <button className="btn__dark" type="submit">Daftar</button>
           </form>
           <p className="masuk__text">Sudah punya akun? 

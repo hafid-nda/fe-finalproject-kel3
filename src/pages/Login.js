@@ -1,10 +1,10 @@
-import '../assets/styles/login.css'
 import Form from 'react-bootstrap/Form'
-
+import Alert from 'react-bootstrap/Alert'
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import '../assets/styles/login.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -20,6 +20,11 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");
+
+  const [errorResponse, setErrorResponse] = useState({
+    isError: false,
+    message: "",
+  });
 
   useEffect(() => {
     emailRef.current.focus();
@@ -53,6 +58,8 @@ export default function Login() {
         localStorage.setItem("token", result.accessToken);
         navigate("/");
       }
+    }, (err) => {
+      console.log(err);
     })
   };
 
@@ -69,7 +76,7 @@ export default function Login() {
         </button>
         <div className="masuk">
           <h2>Masuk</h2>
-          <form action="" className="form" onSubmit={handleLogin}>
+          <form className="form" onSubmit={handleLogin}>
             <Form.Group>
               <label className="form__label" htmlFor="email">Email</label>
               <input 
@@ -104,7 +111,11 @@ export default function Login() {
                 }
               </button>
             </div>
-            
+            {errorResponse.isError && (
+              <Alert variant="danger">
+                {errorResponse.message}
+              </Alert>
+            )}
             <button 
               className="btn__dark" 
               type="submit"
