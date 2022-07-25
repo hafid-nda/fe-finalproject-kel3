@@ -1,4 +1,4 @@
-import './infoPenawar.css'
+import '../assets/styles/infoPenawar.css'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 

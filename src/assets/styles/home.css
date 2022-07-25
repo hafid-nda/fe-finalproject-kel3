@@ -29,3 +29,7 @@
 .item-container img {
   width: 100%;
 }
+
+.kategori {
+  display: flex;
+}

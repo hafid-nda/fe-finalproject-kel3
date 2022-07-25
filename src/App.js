@@ -7,15 +7,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import DetailProduct from './pages/DetailProduct';
 import SellerProduct from './pages/SellerProduct';
-
 import ProductAdd from './pages/TambahProduct';
-
 import Profil from './pages/Profil';
-import  DaftarJual from './pages/DaftarJual';
-import  Diminati from './pages/Diminati';
-import  Terjual from './pages/Terjual';
-
-
+import DaftarJual from './pages/DaftarJual';
+import Diminati from './pages/Diminati';
+import Terjual from './pages/Terjual';
 
 function App() {
   return (
@@ -44,8 +40,7 @@ function App() {
 
           <Route path="/daftarjual" element={<DaftarJual />} />
           <Route path="/diminati" element={<Diminati />} />
-          <Route path="/terjual" element={<Terjual />} />          
-          
+          <Route path="/terjual" element={<Terjual />} />                    
         </Routes>
       </BrowserRouter>
     </div>

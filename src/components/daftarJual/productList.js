@@ -1,5 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 import { dataProducts } from '../../data/dataProducts'
 import './productList.css'
 

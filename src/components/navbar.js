@@ -72,7 +72,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* <NavbarMenu /> */}
+        <NavbarMenu />
         <HandleLogin islogin={true} />
       </header>
       </>

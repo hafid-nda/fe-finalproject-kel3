@@ -1,51 +1,71 @@
 import '../assets/styles/home.css'
 
-import Navbar from '../components/navbar'
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
-import { dataProducts } from '../data/dataProducts'
+import Navbar from '../components/navbar';
+import { Product } from '../components/home/productList';
 
 import banner from '../assets/images/banner.png'
-export const Product = ({ name, price, category, image }) => (
-  
-  <div className="item-container card">
-      <img 
-        src={image[0].url} 
-        alt="" 
-      />      
-    <div>
-      {name}
-    </div>
-    <div>
-      {category}
-    </div>
-    <div>
-      {price}
-    </div>
-  </div>
-);
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Home = () => {
-  const [productList, setProductList] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState();
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [user, setUser] = useState({});
+  const [item, setItem] = useState([]);
+  const [category, setCategory] = useState();
+
+  const handleButtonJual = () => {
+    isLoggedIn ? user.kota ? navigate('/infoproduct') : navigate('/editprofile') : navigate('/login')
+  }
 
   useEffect(() => {
-    setProductList(dataProducts);
+    const validateLogin = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const currentUserRequest = await axios.get(
+          "http://localhost:2000/api/v1/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const currentUserResponse = currentUserRequest.data;
+        if (currentUserResponse.status) {
+          setUser(currentUserResponse.data.user);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    };
+    validateLogin();
   }, []);
-
-  function handleCategoryChange(event) {
-    setSelectedCategory(event.target.value);
-  }
-
-  function getFilteredList() {
-    if (!selectedCategory) {
-      return productList;
+  
+  const categories = category ? `&category=${category}` : ""
+  const getProductPublish = async () => {
+    try {
+      const dataProduct = await axios.get(
+        "http://localhost:2000/api/v1/product"
+      )
+      const payloadData = await dataProduct.data.data;
+      setItem(payloadData)
+    } catch (err) {
+      console.log(err);
     }
-    return productList.filter((item) => item.category === selectedCategory);
   }
+  useEffect(() => {
+      getProductPublish()
+  }, [categories])
 
-  var filteredList = useMemo(getFilteredList, [selectedCategory, productList]);
 
+  
   return (
     <div className="home">
       <Navbar />
@@ -55,25 +75,63 @@ const Home = () => {
       </div>
       <main className="home__main">
         <h4>Telusuri Kategori</h4>
-        <div>
-          <select
-            name="category-list"
-            id="category-list"
-            onChange={handleCategoryChange}
-          >
-            <option value="">Semua</option>
-            <option value="Hobi">Hobi</option>
-            <option value="Kendaraan">Kendaraan</option>
-            <option value="Baju">Baju</option>
-            <option value="Elektronik">Elektronik</option>
-            <option value="Kesehatan">Kesehatan</option>
-
-          </select>
+        <div className="kategori">
+        <button 
+          value="" 
+          onClick={() => setCategory(null)}
+          className="button btn__purple"
+        >
+          <FontAwesomeIcon icon={faSearch}  size="lg"/>
+          Semua
+        </button>
+        <button 
+          value="Hobi" 
+          onClick={() => setCategory("hobi")}
+          className="button btn__purple"
+        >
+          <FontAwesomeIcon icon={faSearch}  size="lg"/>
+          Hobi
+        </button>
+        <button 
+          value="Kendaraan" 
+          onClick={() => setCategory("kendaraan")}
+          className="button btn__purple"
+        >
+          <FontAwesomeIcon icon={faSearch}  size="lg"/>
+          Kendaraan
+        </button>
+        <button 
+          value="Baju" 
+          onClick={() => setCategory("baju")}
+          className="button btn__purple"
+        >
+          <FontAwesomeIcon icon={faSearch}  size="lg"/>
+          Baju
+        </button>
+        <button 
+          value="Elektronik" 
+          onClick={() => setCategory("elektronik")}
+          className="button btn__purple"
+        >
+          <FontAwesomeIcon icon={faSearch}  size="lg"/>
+          Elektronik
+        </button>
+        <button 
+          value="Kesehatan" 
+          onClick={() => setCategory("kesehatan")}
+          className="button btn__purple"
+        >
+          <FontAwesomeIcon icon={faSearch}  size="lg"/>
+          Kesehatan
+        </button>
         </div>
+
+        <button className="button btn__purple d-flex gap-2 px-3 py-2 fixed-bottom mb-4" onClick={handleButtonJual}>
+          Jual
+        </button>
+
         <div className="product-list">
-          {filteredList.map((element, index) => (
-            <Product {...element} key={index} />
-          ))}
+          <Product item={item} />
         </div>
 
       </main>
