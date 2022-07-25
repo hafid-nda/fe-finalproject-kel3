@@ -1,209 +1,198 @@
-import '../assets/styles/infoPenawar.css'
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
-
-import { Link } from 'react-router-dom';
-import { useState } from 'react'
-
-import Produk from '../assets/images/produk.png';
-import Logo from '../assets/images/logo.png';
-
-import { dataProducts } from '../data/dataProducts'
-import '../components/notif.css'
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Profiler, useEffect, useRef, useState } from "react";
+import { Nav, Navbar, Form, Container, Button, Alert } from "react-bootstrap";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import { FiCamera, FiArrowLeft } from "react-icons/fi";
+import "../css/mainRio.css";
 import {
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+    Stack,
+    Row,
+    Col,
+    Card,
+    Modal,
+} from "react-bootstrap";
+import { FaWhatsapp } from "react-icons/fa";
+import { ModalPenawar } from "../component/modalStatus";
 
-export const InfoPenawar = () => {
-  //modal 1
-  const [show, setShow] = useState(false);
-  const [changeButton, setChangeButton] = useState({ isHidden: false });
+export default function InfoPenawar() {
+    //   const [post, setPost] = useState([]);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleChangeButton = () => {
-    setShow(false)
-    setChangeButton({ isHidden: !changeButton.isHidden});
-  };
+    //   useEffect(() => {
+    //     const postData = async () => {
+    //       const response = await axios.get(`http://localhost:2000/v1/products/search`);
+    //       console.log(response);
+    //       const data = await response.data.data.handle_get_all_product;
+    //       console.log(data);
 
-  const visibility = { display: changeButton.isHidden ? 'none' : 'flex'};
-  
-  
-  // modal 2
-  const [showStatus, setShowStatus] = useState(false);
-  const [removeButton, setRemoveButton] = useState({ isHidden: true });
- 
-  const handleClose2 = () => setShowStatus(false);
-  const handleShow2 = () => setShowStatus(true);
+    //       setPost(data);
+    //     };
+    //     postData();
+    //   }, []);
+    const [show, setShow] = useState(false);
 
-  const visibility2 = { display: changeButton.isHidden ? 'flex' : 'none'};
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
-  const handleRemoveButton = () => {
-    setShow(false);
-    setShowStatus(false);
-    setRemoveButton({ isHidden: removeButton.isHidden});
-  };
-
-  // radio
-  const [choice, setChoice] = useState('');
-
-  const radioValue = ['true', 'false']
-  const handleChangeRadio = (event) => {
-     setChoice(event.target.value)
-   }
- 
-   const resetRadioState = () => {
-     setChoice('');
-   }
-
-  return (
-    <div>
-      <header className="header__info">
-        <Link to="/">
-          <img className="logo" src={Logo} alt="" />
-        </Link>
-        <h5 className="header__title" >Info Penawar</h5>
-      </header>
-      <main className="penawaran">
-        <Link to="/daftarjual">
-          <button className="back" type="button">
-            <FontAwesomeIcon icon={faArrowLeft}  size="xl"/>
-          </button>
-        </Link>
-        <div className="">
-          <div className="seller__info">
-            <img className="seller__img" src="../images/penjual.png" alt="" />
-            <div className="seller__text">
-              <h3 className="seller__name">Nama Pembeli</h3>
-              <p className="seller__city">Kota</p>
-            </div>
-          </div>
-
-          <h6>Daftar Produkmu yang Ditawar</h6>
-          <div>
-            <div className="notif-item">
-              <img className="product__img" src={Produk} alt="" />
-              <div className="notif-text">
-                <div className="notif__title">
-                  <span>Penawaran produk</span>
-                  <span>tanggal/jam</span>
-                </div>
-                <p>{dataProducts[0].name}</p>
-                <p>{dataProducts[0].price}</p> 
-                <p>Ditawar Rp {dataProducts[0].price}</p>
-              </div>
-            </div>
-            <div className="penawar__btn" style={visibility}>
-              <button className="button btn__white">Tolak</button>
-              <button 
-                className="button btn__purple"
-                onClick={handleShow}  
-              >
-                Terima
-              </button>
-            </div>
-
-            <div className="penawar__btn" style={visibility2}>
-              <button 
-                className="button btn__white"
-                onClick={handleShow2}  
-              >
-                Status
-              </button>
-              <button 
-                className="button btn__purple btn__wa"
-              >
-                Hubungi di 
-                <FontAwesomeIcon icon={faWhatsapp}  size="lg"/>
-              </button>
-            </div>
-
-            <Modal show={show} onHide={handleClose} className="modal" >
-              <Modal.Header closeButton />
-              <Modal.Body>
-                <h5>Yeay kamu berhasil mendapat harga yang sesuai</h5>
-                <p className="text-muted">Segera hubungi pembeli melalui whatsapp untuk transaksi selanjutnya</p>
-
-                <div className="modal__info">
-                  <h5 className="title">Product Match</h5>
-                  <div className="buyer">
-                    <img className="seller__img" src="../images/penjual.png" alt="" />
-                    <div className="seller__text">
-                      <h3 className="seller__name">Nama Pembeli</h3>
-                      <p className="seller__city">Kota</p>
+    return (
+        <div>
+            {/* navbar */}
+            <div className="na1 py-4 shadow">
+                <nav className="navbar navbar-expand-lg navbar-light bg-all">
+                    <Link to="/">
+                        <button className="na2 navbar-brand box"></button>
+                    </Link>
+                    <Navbar.Brand href="#" className="brand" />
+                    <div className="offcanvas-body" id="offcanvasRight">
+                        <div className="info1 navbar">
+                            <Nav className="text-dark"> Info Penawar </Nav>
+                        </div>
                     </div>
-                  </div>
-                  <div className="notif-item">
-                    <img className="product__img" src={Produk} alt="" />
-                    <div className="notif-text">
-                      <p>{dataProducts[0].name}</p>
-                      <p className="product__price">{dataProducts[0].price}</p> 
-                      <p>Ditawar Rp {dataProducts[0].price}</p>
+                </nav>
+            </div>
+            <div>
+                <div className="col-6 text-center mt-3">
+                    <Link className="arrow2" to="/" style={{ color: "black" }}>
+                        <FiArrowLeft />
+                    </Link>
+                </div>
+                <Row>
+                    <div className="col-2"></div>
+                    <div className="col-4 mt-4">
+                        <div className="radius-primary box-shadow p-3">
+                            <Stack direction="horizontal" gap={3}>
+                                <img src="../images/profile.png" alt="" />
+                                <Stack>
+                                    <p className="m-0 fw-bold">Nama Penjual</p>
+                                    <p className="m-0 text-black-50">Kota</p>
+                                </Stack>
+                            </Stack>
+                        </div>
+                        <style jrx>
+                            {`
+                                .box-shadow {
+                                    background-color: white;
+                                    border-radius: 25px;
+                                    box-shadow: 3px 2px 2px 2px grey
+                                }
+                            `}
+                        </style>
+                        <div className="d-flex flex-row mt-3">
+                            <p className="m-0 fw-bold">Nama Penjual</p>
+                        </div>
+                        <div className=" radius-primary p-2 mt-3">
+                            <Stack direction="horizontal" gap={3}>
+                                <img src="../images/profile.png" alt="" />
+                                <Stack>
+                                    <p className="m-0 text-black-50">Kota</p>
+                                    <p className="m-0">Jam Tangan Casio</p>
+                                    <p className="m-0">Rp 250.000</p>
+                                    <p className="m-0">Ditawar Rp 200.000</p>
+                                </Stack>
+                                <Stack>
+                                    {" "}
+                                    <p className="m-0 text-black-50 text-end">20 Apr, 14:04</p>
+                                </Stack>
+                            </Stack>
+                        </div>
+                        <div className="col-6 d-flex ms-auto">
+                            <Button
+                                variant="outline-primary"
+                                className=" w-50 radius-primary btn me-3"
+                                type="submit"
+                            >
+                                Tolak
+                            </Button>{" "}
+                            <Button
+                                className=" w-50 radius-primary btn1"
+                                type="submit"
+                                onClick={handleShow}
+                            >
+                                Terima
+                            </Button>
+                            <style jrx>{`
+                                .btn1 {
+                                    background-color: blueviolet;
+                                }
+                                .btn {
+                                    border-radius: 25px;
+                                }
+                                .btn:hover {
+                                    background-color: blueviolet;
+                                }
+                            `}</style>
+                        </div>
+                        <Modal show={show} onHide={handleClose}>
+                            <div className="p-3">
+                                <Modal.Header closeButton className="border-0">
+                                    <Modal.Title></Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <p className="fw-bold">Perbarui status penjualan produkmu</p>
+                                    <p className="text-black-50">
+                                        Segera hubungi pembeli melalui whatsapp untuk transaksi selanjutnya
+                                    </p>
+                                    <h5 className="text-center mb-3">Product Match</h5>
+                                    <Stack
+                                        direction="horizontal"
+                                        gap={3}
+                                        className="bg-color-grey radius-secondary p-2"
+                                    >
+                                        <img
+                                            src="../images/jam1.png"
+                                            alt=""
+                                            style={{
+                                                width: "48px",
+                                                height: "48px",
+                                                objectFit: "cover",
+                                                borderRadius: "12px",
+                                            }}
+                                        />
+                                        <Stack>
+                                            <p className="m-0 fw-bold">Nama Pembeli</p>
+                                            <p className="m-0 text-black-50">Kota</p>
+                                        </Stack>
+                                    </Stack>
+                                    <Stack
+                                        direction="horizontal"
+                                        gap={3}
+                                        className="bg-color-grey radius-secondary p-2"
+                                    >
+                                        <img
+                                            src="../images/jam1.png"
+                                            alt=""
+                                            style={{
+                                                width: "48px",
+                                                height: "48px",
+                                                objectFit: "cover",
+                                                borderRadius: "12px",
+                                            }}
+                                        />
+                                        <Stack>
+                                            <p className="m-0 fw-bold">Jam Tangan Casio</p>
+                                            <p className="m-0">Rp 250.000</p>
+                                            <p className="m-0">Ditawar Rp 200.000</p>
+                                        </Stack>
+                                    </Stack>
+                                </Modal.Body>
+                                <Modal.Footer className="pe-5 d-gird gap-2">
+                                    <Button
+                                        className=" w-100 btn2 border-0"
+                                        onClick={handleClose}
+                                    >
+                                        Hubungi via Whatsapp
+                                        <FaWhatsapp className="mx-2" />
+                                    </Button>
+                                    <style jsx>{`
+                                                .btn2 {
+                                                    background-color: purple;
+                                                }
+                                            `}</style>
+                                </Modal.Footer>
+                            </div>
+                        </Modal>
+                        <ModalPenawar />
                     </div>
-                  </div>
-                </div>
-                </Modal.Body>
-              <Modal.Footer>
-                <button 
-                  className="button btn__purple btn__wa"
-                  onClick={handleChangeButton}
-                >
-                  Hubungi via Whatsapp
-                  <FontAwesomeIcon icon={faWhatsapp}  size="xl"/>
-                </button>
-              </Modal.Footer>
-            </Modal>
-
-            {/* modal status */}
-            <Modal show={showStatus} onHide={handleClose2} className="modal2" >
-              <Modal.Header closeButton />
-              <Modal.Body>
-                <h5>Perbarui status penjualan produkmu</h5>
-                <div className="form-check">
-                  <input 
-                    className="form-check-input"
-                    type="radio" 
-                    name="success" 
-                    id="success" 
-                    value="true"
-                    checked={choice === 'true'}
-                    onChange={handleChangeRadio}
-                  />
-                  <label className="form-check-label" for="success">
-                    Berhasil terjual
-                  </label>
-                  <p className="text-muted">Kamu telah sepakat menjual produk ini kepada pembeli</p>
-                  <br />
-                  <input 
-                    className="form-check-input"
-                    type="radio" 
-                    name="cancel" 
-                    id="cancel" 
-                    value="false"
-                    checked={choice === 'false'}
-                    onChange={handleChangeRadio}
-                  />
-                  <label className="form-check-label" for="cancel">
-                    Batalkan transaksi
-                  </label>
-                  <p className="text-muted">Kamu membatalkan transaksi produk ini dengan pembeli</p>
-                </div>
-              </Modal.Body>
-              <Modal.Footer>
-                <button 
-                  className="button btn__purple"
-                  onClick={handleRemoveButton}
-                >
-                  Kirim
-                </button>
-              </Modal.Footer>
-            </Modal>
-          </div>
+                </Row>
+            </div>
         </div>
-      </main>
-    </div>
-  )
+    );
 }

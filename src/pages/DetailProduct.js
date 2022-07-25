@@ -1,125 +1,188 @@
-import '../assets/styles/product.css'
-import Modal from 'react-bootstrap/Modal'
-import Slider from '../components/carousel'
-import Navbar from '../components/navbar'
-
-import {Link, useNavigate } from "react-router-dom";
-import { useState } from 'react'
-
-//Toast Notification
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-//Import Icon
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft
-} from "@fortawesome/free-solid-svg-icons";
-import Produk from '../assets/images/produk.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Carousel from "react-bootstrap/Carousel";
+import "../css/detailproduct.css";
+// import "../css/main.css";
+import Navbar from "../component/NavBar";
+import { FiArrowLeft } from "react-icons/fi";
+import { useNavigate, Link, useParams, Navigate } from "react-router-dom";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Alert } from 'react-bootstrap';
 
 
-import { dataProducts } from '../data/dataProducts'
-import { dataSellers } from '../data/dataSellers'
 
+function DetailProduct() {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [data, setData] = useState([]);
+    const [user, setUser] = useState({});
 
-const Detail = () => {
+    const [errorResponse, setErrorResponse] = useState({
+        isError: false,
+        message: "",
+    });
 
-  let navigate = useNavigate(); 
-  const routeChange = () =>{ 
-    let path = `/`; 
-    
-    navigate(path);
-  }
+    const fetchData = async () => {
+        try {
+            // Check status user login
+            // 1. Get token from localStorage
+            const token = localStorage.getItem("token");
 
-  //modal
-  const [show, setShow] = useState(false);
-  const [changeButton, setChangeButton] = useState({ isHidden: false });
+            // 2. Check token validity from API
+            const currentUserRequest = await axios.get(
+                "http://localhost:2000/api/v1/product",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleChangeButton = () => {
-    setShow(false)
-    setChangeButton({ isHidden: !changeButton.isHidden});
-  };
+            const currentUserResponse = currentUserRequest.data;
 
-  const visibility = { display: changeButton.isHidden ? 'none' : 'flex'};
-  
-  return (
-    <>
-      <Navbar />
-      <div>
-        <button className="backArrow" >
-          <FontAwesomeIcon icon={faArrowLeft}  size="lg"/>
-        </button>
-      </div>
-      <main className="main">
-        <div className="slider">
-          <Slider />
-        </div>
+            if (currentUserResponse.status) {
+                setUser(currentUserResponse.data.user);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
-        <div className="info">
-          <div className="product__info">
-            <p className="product__name">{dataProducts[0].name}</p>
-            <p className="product__category">{dataProducts[0].category}</p>
-            <p>Rp {dataProducts[0].price}</p>
-          <div className="btn__container">
-            <button 
-              className="button btn__purple" 
-              type="button"
-              id="alertBtn"
-              onClick={handleShow}  
-            >
-              Saya tertarik dan ingin nego
-            </button>
-          </div>
-      </div>
+    const getProduct = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const responseProduct = await axios.get(`http://localhost:2000/api/v1/product`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
 
-          <div className="seller__info">
-            <img className="seller__img" src="../images/penjual.png" alt="" />
-            <div className="seller__text">
-              <h3 className="seller__name">{dataSellers[0].seller_name}</h3>
-              <p className="seller__city">{dataSellers[0].city}</p>
+            const dataProduct = await responseProduct.data.data.getProductById;
+
+            setData(dataProduct)
+            console.log(dataProduct);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const onUpdate = async (e, isPublish) => {
+        e.preventDefault();
+
+        try {
+            const token = localStorage.getItem("token");
+            const postPayload = new FormData();
+            postPayload.append("isPublish", isPublish);
+
+            const createRequest = await axios.put(
+                "http://localhost:2000/api/v1/product",
+                postPayload,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            const createResponse = createRequest.data;
+            console.log(createResponse);
+            if (createResponse.status) navigate(`/seller/daftar-jual`);
+        } catch (err) {
+            const response = err.response.data;
+
+            setErrorResponse({
+                isError: true,
+                message: response.message,
+            });
+        }
+    };
+
+    useEffect(() => {
+        getProduct();
+        fetchData();
+    }, [])
+
+    return (
+        <>
+            <div className="bg-nav">
+                <Navbar />
             </div>
-          </div>
-        </div>
-          <div className="desc">
-            <h3>Deskripsi</h3>
-            <p>{dataProducts[0].desc}</p>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta ipsam fugit provident soluta optio voluptates saepe animi ipsa inventore quaerat fuga aliquid eius totam sapiente quibusdam incidunt perferendis hic, minima impedit tempore, similique, commodi beatae? Magni tempore veritatis autem debitis, laudantium eaque beatae rerum nihil sed. Eum provident aliquam tenetur.</p>
-          </div>
-      </main>
+            <Container >
+                <div className="flex-container">
+                    <div style={{ width: "100%" }}>
+                        <div className="carousel">
+                            <Carousel>
+                                {data.image ? data.image.map((image) => (
+                                    <Carousel.Item>
+                                        <div>
+                                            <Link className="arrow2" to="editprofile/" style={{ color: "black" }}>
+                                                <FiArrowLeft />
+                                            </Link>
+                                            <img
+                                                className="d-block w-100 "
+                                                src={`${image}`}
+                                                alt=''
+                                            />
+                                        </div>
+                                    </Carousel.Item>
+                                )) : ""}
+                            </Carousel>
+                        </div>
+                    </div>
 
-      <Modal show={show} onHide={handleClose} className="modal" >
-        <Modal.Header closeButton />
-        <Modal.Body>
-          <h5>Masukkan Harga Tawarmu</h5>
-          <p className="text-muted">Harga tawaranmu akan diketahui penjual, jika penjual cocok kamu akan segera dihubungi penjual.</p>
+                    <div style={{ width: "45%", justifyContent: "space-around", marginLeft: "30px" }} className="top-20">
+                        <div class="textShadowBox2  w-100  mt-4">
+                            <h4>{data.name}</h4>
+                            <h6>{data.category}</h6>
+                            <h5>{data.price}</h5>
+                            <Button className="btnPurple w-100 mt-2 mb-2" type='submit' onClick={(e) => onUpdate(e, true)} > Terbitkan</Button>
+                        <Link to={`http://localhost:2000/api/v1/product`}>
+                            <Button
+                                className="btnPurple2 w-100 mt-2 "
+                                style={{ background: "#FFFFFF", color: "black" }}
+                            >
+                                Edit
+                            </Button>
+                        </Link>
+                    </div>
 
-          <div className="modal__info">
-            <div className="buyer">
-              <img className="product__img" src={Produk} alt="" />
-              <div className="seller__text">
-                <h3 className="seller__name">{dataProducts[0].name}</h3>
-                <p className="seller__city">{dataProducts[0].price}</p>
-              </div>
+                    <div class="textShadowBox2  mt-4 " >
+                        <div className="justify-content-start">
+                            <div className="flex-container2">
+                                <div>
+                                    <img src={`${user.image}`} style={{ height: '48px', width: '48px', objectFit: 'cover', borderRadius: '12px' }} alt='' />
+                                </div>
+                                <div style={{ marginLeft: '1rem' }}>
+                                    <h5>{user.name}</h5>
+                                    <h5>{user.kota}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-          </div>
-          <form>
-            <label htmlFor="tawar">Harga Tawar</label>
-            <input type="number" name="tawar" placeholder="Rp 0,00" min="0" required/>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <button 
-            className="button btn__purple btn__wa"
-            onClick={handleChangeButton}
-          >
-            Kirim
-          </button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  )
+            <div className="desc">
+                <div className="textShadowBox p-4 mt-4 mb-4">
+                    <h4>Deskripsi</h4>
+                    <div>
+                        {data.description}
+                    </div>
+                </div>
+            </div>
+            {errorResponse.isError && (
+                <Alert variant="danger" className="mt-2">{errorResponse.message}</Alert>
+            )}
+        </Container>
+        </>
+    );
 }
 
-export default Detail;
+export default DetailProduct;

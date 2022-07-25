@@ -1,137 +1,125 @@
-import Form from 'react-bootstrap/Form'
-import Alert from 'react-bootstrap/Alert'
-import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useRef, useState } from "react";
+import { Form, Row, Col, Button, Alert } from "react-bootstrap";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import "../css/login.css";
 
-import '../assets/styles/login.css'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-  faEye,
-  faEyeSlash
-} from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
-  const navigate = useNavigate();  
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("");
-  const [passwordType, setPasswordType] = useState("password");
+    const navigate = useNavigate();
 
-  const [errorResponse, setErrorResponse] = useState({
-    isError: false,
-    message: "",
-  });
+    const emailField = useRef("");
+    const passwordField = useRef("");
 
-  useEffect(() => {
-    emailRef.current.focus();
-  }, [])
+    const [errorResponse, setErrorResponse] = useState({
+        isError: false,
+        message: "",
+    });
+    console.log(emailField.current.value)
+    console.log(passwordField.current.value) 
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const onLogin =  (e) => {
+        e.preventDefault();
+        console.log(emailField.current.value)
+        axios.post('http://localhost:2000/api/v1/login', {
+            email:email,
+            password:password
+          })
+          .then((response) => {
+            const result = response.data
+            console.log(response.data);
+            if (result) {
+                localStorage.setItem("token", result.accessToken);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const handlePasswordChange = (e) => {
-      setPassword(e.target.value);
-  };
-  const togglePassword = () => {
-    if(passwordType==="password") {
-     setPasswordType("text")
-     return;
+                navigate("/");
+            }
+
+          }, (error) => {
+            console.log(error);
+          });
+        // try {
+        //     const loginRequest =  axios.post(
+        //         "http://localhost:2000/api/v1/login",
+                
+        //         {
+        //             email: email,
+        //             password: password,
+        //         }
+        //     );
+
+        //     const loginResponse = loginRequest;
+        //     console.log(loginResponse);
+
+        //     if (loginResponse.status) {
+        //         localStorage.setItem("token", loginResponse.data.accessToken);
+
+        //         navigate("/");
+        //     }
+        // } catch (err) {
+        //     console.log(err);
+        //     const response = err.response.data;
+
+        //     setErrorResponse({
+        //         isError: true,
+        //         message: response.message,
+        //     });
+        // }
+    };
+    const styleLabel = {
+        borderRadius: '10px',
+    };
+
+    const styleLink = {
+        textDecoration: 'none',
+        color: '#7126B5',
+        fontWeight: 'bold',
     }
-    setPasswordType("password")
-  };
 
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    axios.post('http://localhost:8000/api/login', {
-      email:email,
-      password:password
-    })
-    .then((res) => {
-      const result = res.data
-      console.log(result);
-      if(result) {
-        localStorage.setItem("token", result.accessToken);
-        navigate("/");
-      }
-    }, (err) => {
-      console.log(err);
-    })
-  };
 
-  return (
-    <div>
-      <div className="container__left">
-        <div className="background">
-          <h1 className="brand">Second <br /> Hand.</h1>
-        </div>
-      </div>
-      <div className="container__right">
-        <button className="back" type="button">
-          <FontAwesomeIcon icon={faArrowLeft}  size="2xl"/>
-        </button>
-        <div className="masuk">
-          <h2>Masuk</h2>
-          <form className="form" onSubmit={handleLogin}>
-            <Form.Group>
-              <label className="form__label" htmlFor="email">Email</label>
-              <input 
-                className="form__input" 
-                onChange={handleEmailChange}
-                ref={emailRef}
-                value={email}
-                type="email" 
-                name="email"
-                id="email"
-                placeholder="Contoh: johndee@gmail.com"
-                required
-              />
-            </Form.Group>
-            <label className="form__label" htmlFor="password">Password</label>
-            <div className="pass__container">
-              <input 
-                className="form__input"
-                onChange={handlePasswordChange}
-                ref={passwordRef}
-                value={password}
-                type={passwordType}
-                name="password" 
-                id="password" 
-                placeholder="Masukkan password" 
-                required
-              />
-              <button className="pass__eye" type="button" onClick={togglePassword}>
-                { passwordType==="password"?
-                  <FontAwesomeIcon icon={faEye} size="xl" /> :
-                  <FontAwesomeIcon icon={faEyeSlash} size="xl" />
-                }
-              </button>
-            </div>
-            {errorResponse.isError && (
-              <Alert variant="danger">
-                {errorResponse.message}
-              </Alert>
-            )}
-            <button 
-              className="btn__dark" 
-              type="submit"
-            >
-              Masuk
-            </button>
-          </form>
-          <p className="masuk__text">Belum punya akun? 
-            <span className="masuk__link">
-              <Link to="/register">
-                <strong>Daftar di sini</strong>
-              </Link>
-            </span>
-          </p>
-        </div>
-      </div>
-    </div>
-  )
+    return (
+        <Row>
+            <Col className="register-left">
+                <img src="/images/login.jpg" alt=""/>
+            </Col>
+            <Col className="register-right">
+                <h3 className="mb-3">Masuk</h3>
+                <Form onSubmit={onLogin}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            type="text"
+                            ref={emailField}
+                            placeholder="Contoh: johndee@gmail.com"
+                            style={styleLabel}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                            type="password"
+                            ref={passwordField}
+                            placeholder="Masukkan Password"
+                            style={styleLabel}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </Form.Group>
+                    {errorResponse.isError && (
+                        <Alert variant="danger">{errorResponse.message}</Alert>
+                    )}
+                    <Button className="w-100" type="submit" style={styleLabel}>
+                        Masuk
+                    </Button>
+                    <p className="m-4 text-center">
+                        Belum punya akun? <Link style={styleLink} to="/register">Daftar di sini</Link>
+                    </p>
+                </Form>
+            </Col>
+        </Row>
+    );
 }
